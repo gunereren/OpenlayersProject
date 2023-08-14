@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Openlayers Map Deneme</title>
+    <link rel="stylesheet" href="node_modules/ol/ol.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <a class="skiplink" href="#map">Go to map</a>
+    <div id="belsisUstBar">
+        <div id="logo">
+            <img src="1522420792119.jpeg" alt="">
+        </div>
+        <div id="baslik">
+            <p id="textBaslik">
+                Belsis Yazılım
+            </p>
+        </div>
+    </div>
+    <div id="map" class="map" tabindex="1"></div>
+    <div id="popupBackground"></div>
+    <div class="popup" id="popup">
+        Şehir <br>
+        <input type="text" class="inputBox" id="input1">
+        <br>
+        İlçe <br>
+        <input type="text" class="inputBox" id="input2">
+        <br>
+        Mahalle <br>
+        <input type="text" class="inputBox" id="input3">
+        <button id="closePopupButton">
+            <i class="fa-solid fa-xmark" style="color: #7a8190;"></i>
+        </button>
+        <button class="btn" id="saveParcel">Parseli Kaydet</button>
+        <button class="btn" id="updateDeleteBtn">Parseli Güncelle</button>
+        <button class="btn" id="updateDeleteBtn">Parseli Sil</button>
+    </div>
+    <div id="editPopupBackground"></div>
+    <div id="editingPopup">
+        <div>
+            <p style="font-size: 2rem; text-align: center;">Edit</p>
+            <button id="editingClosePopupButton">
+                <i class="fa-solid fa-xmark" style="color: #7a8190;"></i>
+            </button>
+        </div>
+    
+        Şehir <br>
+        <input type="text" class="editInputBox" id="editInput1">
+        <br>
+        İlçe <br>
+        <input type="text" class="editInputBox" id="editInput2">
+        <br>
+        Mahalle <br>
+        <input type="text" class="editInputBox" id="editInput3">
+    
+        <div style="text-align: right;">
+            <button id="updateBtn" class="updateCancelBtns" style="background-color: #f96156; color: white;">
+                <i class="fa-solid fa-check"></i>
+                Update
+            </button>
+    
+            <button id="cancelBtn" class="updateCancelBtns" style="color: black;">
+                <i class="fa-solid fa-ban"></i>
+                Cancel
+            </button>
+        </div>
+    
+    </div>
+
+    <!-- BUTONLAR -->
+    <button id="zoom-out">Zoom out</button>
+    <button id="zoom-in">Zoom in</button>
+    <br>
+    <!-- FORM KISMI (Harita cizim tipi) -->
+    <form style="width: auto; display: inline-block;">
+        <label id="geometryType" for="type">Geometry type:</label>
+        <select id="type">
+            <option value="Point">Point</option>
+            <option value="Polygon">Polygon</option>
+            <option value="LineString">LineString</option>
+        </select>
+    </form>
+
+    <button id="mainEditButton">
+        Edit
+    </button>
+
+    <div id="tableDiv">
+        <table id="table" class="table" width=100%; style=" background-color: #eceaea; ">
+            <colgroup>
+                <col style="width: 16.66%; border: solid black 1px;">
+                <col style="width: 16.66%;">
+                <col style="width: 16.66%;">
+                <col style="width: 50%;">
+            </colgroup>
+            <tr id="header" style="height: 2.5rem;">
+                <th>Parsel İl</th>
+                <th>Parsel İlçe</th>
+                <th>Parsel Mahalle</th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+
+    <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+    <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
+    <script type="module" src="main.js"></script>
+
+</body>
+
+</html>

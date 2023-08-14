@@ -1,0 +1,277 @@
+html {
+    font-size: 12.5px;
+}
+
+.map {
+    width: 100%;
+    height: 400px;
+    margin: 5px;
+    display: inline-block;
+
+}
+
+a.skiplink {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+a.skiplink:focus {
+    clip: auto;
+    height: auto;
+    width: auto;
+    background-color: #fff;
+    padding: 0.3em;
+}
+
+#map:focus {
+    outline: #4A74A8 solid 0.15em;
+}
+
+button {
+    margin: 7px 2px;
+}
+
+img {
+    height: 50px;
+    width: 50px;
+}
+
+#belsisUstBar {
+    width: 100%;
+    background-color: #10777e;
+    margin: 3px;
+    height: 4rem;
+    display: -webkit-inline-box;
+}
+
+#logo {
+    height: 4rem;
+    width: 4rem;
+    text-align: left;
+
+}
+
+#baslik {
+    height: 4rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+}
+
+#textBaslik {
+    color: white;
+    font-size: 2rem;
+}
+
+label {
+    font-size: 1.25rem;
+}
+
+form {
+    margin: 0.5rem 0;
+}
+
+#popupBackground {
+    height: 100%;
+    width: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#editPopupBackground {
+    height: 100%;
+    width: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+
+/* Popup stilini burada tanımlayabilirsiniz */
+.popup {
+    font-size: 1rem;
+    line-height: 2rem;
+    width: 80%;
+    /*height: 50%;*/
+    position: fixed;
+    /* Popup'ın ekranda sabit durmasını sağlıyor */
+    top: 50%;
+    /* Popup'ın dikey olarak ortada durmasını sağlıyor */
+    left: 50%;
+    /* Popup'ın yatay olarak ortada durmasını sağlıyor */
+    transform: translate(-50%, -50%);
+    background-color: #f0f0f0;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: none;
+    border-radius: 1rem;
+}
+
+#closePopupButton {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 0.5rem;
+    padding: 0.1rem 0.2rem;
+    border: none;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+#closePopupButton:hover {
+    color: rgba(0, 0, 0);
+}
+
+.inputBox {
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    height: 2.5rem;
+    right: 0px;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    box-sizing: border-box;
+    width: 100%;
+    height: 3.5rem;
+    background-color: #4baf4f;
+    color: white;
+    border-radius: 3px;
+    border: none;
+}
+
+#saveParcel:hover {
+    background-color: #3d8f40;
+}
+
+#updateDeleteBtn {
+    display: none;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 1.25rem;
+}
+
+#tableDiv {
+    height: 20rem;
+    overflow: auto;
+    border: solid black 1px;
+}
+
+td,
+th {
+    border: 1px solid black;
+    height: 2.5rem;
+    padding-left: 0.5rem;
+}
+
+.satir {
+    background-color: white;
+    display: none;
+}
+
+#editDelete {
+    margin: 0 1rem;
+    align-items: center;
+}
+
+#geometryType {
+    background-color: #05aa6e;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+select {
+    padding: 0.75rem;
+    background-color: #f4511d;
+    color: white;
+    border-radius: 5px;
+}
+
+select:hover {
+    background-color: #ff711e;
+}
+
+#mainEditButton:hover {
+    background-color: #ff711e;
+}
+
+#mainEditButton {
+    padding: 0.75rem 2.5rem;
+    background-color: #f4511d;
+    color: white;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+option {
+    background-color: #87bb88;
+}
+
+#editingPopup {
+    font-size: 1rem;
+    line-height: 2rem;
+    width: 30%;
+    height: 50%;
+    position: fixed;
+    /* Popup'ın ekranda sabit durmasını sağlıyor */
+    top: 50%;
+    /* Popup'ın dikey olarak ortada durmasını sağlıyor */
+    left: 50%;
+    /* Popup'ın yatay olarak ortada durmasını sağlıyor */
+    transform: translate(-50%, -50%);
+    background-color: #f0f0f0;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: none;
+    border-radius: 1rem;
+}
+
+#editingClosePopupButton {
+    font-size: 1.5rem;
+    position: fixed;
+    right: 1.5rem;
+    top: 1.5rem;
+    margin: 0.5rem;
+    padding: 0.1rem 0.2rem;
+    border: none;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+#editingClosePopupButton:hover {
+    color: rgba(0, 0, 0);
+}
+
+.updateCancelBtns {
+    font-size: 1.25rem;
+    padding: 1rem 1rem;
+    border-radius: 5px;
+    margin-left: 1rem;
+}
+
+.editInputBox {
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    height: 2.5rem;
+    right: 0px;
+    margin-bottom: 1rem;
+}
