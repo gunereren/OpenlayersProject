@@ -62,46 +62,70 @@ function addInteractions() {
 
 }
 
+// TABLONUN VERİTABANINA GÖRE KENDİNİ DOLDURMASI
+var tablo = document.getElementById("table");
+$.ajax({
+    url: "https://localhost:44384/api/Parcel/getall",
+    method: "GET",
+    success: function (data) {
+        // Veri başarıyla alındığında yapılacak işlemler
+        console.log(data);
+        for(let i = 0 ; i < data.length ; i++){
+            var yeniSatir = tablo.insertRow(tablo.rows.length);
+            yeniSatir.style = "background-color: white;"
+
+            var huc1 = yeniSatir.insertCell(0);
+            var huc2 = yeniSatir.insertCell(1);
+            var huc3 = yeniSatir.insertCell(2);
+            var huc4 = yeniSatir.insertCell(3);
+
+            huc1.innerHTML = data[i].parcelCity;
+            huc2.innerHTML = data[i].parcelDistrict;
+            huc3.innerHTML = data[i].parcelNeighbourhood;
+
+            var duzenleButon = document.createElement("button");        // Tablo Edit butonu
+            duzenleButon.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Edit';
+            duzenleButon.style = "margin:0 1rem; text-align: center;"
+            huc4.appendChild(duzenleButon);
+
+            duzenleButon.onclick = function (event) {
+                var butonunOlduguSatir = event.target.closest("tr");
+                editingPopup(butonunOlduguSatir);
+            };
+
+            var silButon = document.createElement("button");            // Tablo Delete butonu
+            silButon.innerHTML = "<i class=\"fa-solid fa-xmark\" style=\"color: #000000;\"></i> Delete";
+            huc4.appendChild(silButon);
+
+            silButon.onclick = function (event) {
+                var butonunOlduguSatir = event.target.closest("tr");
+                deleteRow(butonunOlduguSatir);
+            };
+        }
+    },
+    error: function () {
+        // Hata durumunda yapılacak işlemler
+        alert("VERİTABANINDAN VERİLER OKUNAMADI")
+    }
+});
+
+
+// ÇİZİM BİTİNCE ÇALIŞAN FONKSİYON
+function onDrawEnd(event) {
+    const popup = document.getElementById("popup");
+    const popupbackground = document.getElementById("popupBackground");
+    popup.style.display = "block";
+    popupbackground.style.display = "block";
+
+    var wkt = format.writeGeometry(event.feature.getGeometry());    // Geometriyi al ve writeGeometry fonksiyonunun içine at
+    // var transformedCoordinates = format.readGeometry(wkt).transform('EPSG:3857', 'EPSG:4326');
+    console.log("WKT Geoms:", wkt);
+}
+
 // PARSELİ KAYDET BUTONUNA BASINCA OLACAKLAR
 saveParcelBtn.addEventListener("click", function () {
     var inputElements = document.getElementsByClassName("inputBox");
-    var tablo = document.getElementById("table");
-    var yeniSatir = tablo.insertRow(tablo.rows.length);
-    yeniSatir.style = "background-color: white;"
-
-    var huc1 = yeniSatir.insertCell(0);
-    var huc2 = yeniSatir.insertCell(1);
-    var huc3 = yeniSatir.insertCell(2);
-    var huc4 = yeniSatir.insertCell(3);
-    /*
-        
-        huc1.innerHTML = inputElements[0].value;
-        huc2.innerHTML = inputElements[1].value;
-        huc3.innerHTML = inputElements[2].value;
-     */
-
-    var duzenleButon = document.createElement("button");        // Tablo Edit butonu
-    duzenleButon.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Edit';
-    duzenleButon.style = "margin:0 1rem; text-align: center;"
-    huc4.appendChild(duzenleButon);
-
-    duzenleButon.onclick = function (event) {
-        var butonunOlduguSatir = event.target.closest("tr");
-        editingPopup(butonunOlduguSatir);
-    };
-
-    var silButon = document.createElement("button");            // Tablo Delete butonu
-    silButon.innerHTML = "<i class=\"fa-solid fa-xmark\" style=\"color: #000000;\"></i> Delete";
-    huc4.appendChild(silButon);
-
-    silButon.onclick = function (event) {
-        var butonunOlduguSatir = event.target.closest("tr");
-        deleteRow(butonunOlduguSatir);
-    };
-
-    for (var i = 0; i < inputElements.length; i++) {                    // Girilen değerleri okuyup inputBox'ı temizleyen döngü
-        inputElements[i].value = "";
-    }
+    
     popup.style.display = 'none';
     popupBackground.style.display = "none";
 });
@@ -122,8 +146,6 @@ function editingPopup(mevcutSatir) {
     editPopupBackground.style.display = "block";
 
     editWithPopup(mevcutSatir)
-
-
     const closeBtn = document.getElementById("editingClosePopupButton");
     closeBtn.onclick = editingPopupClose;
 };
@@ -204,17 +226,7 @@ document.getElementById("zoom-in").addEventListener("click", function () {
     view.setZoom(zoom + 1);
 });
 
-// ÇİZİM BİTİNCE ÇALIŞAN FONKSİYON
-function onDrawEnd(event) {
-    const popup = document.getElementById("popup");
-    const popupbackground = document.getElementById("popupBackground");
-    popup.style.display = "block";
-    popupbackground.style.display = "block";
 
-    var wkt = format.writeGeometry(event.feature.getGeometry());    // Geometriyi al ve writeGeometry fonksiyonunun içine at
-    var transformedCoordinates = format.readGeometry(wkt).transform('EPSG:3857', 'EPSG:4326');
-    console.log("WKT Geoms:", transformedCoordinates.flatCoordinates);
-}
 
 // ANA EKRANDA DURAN BÜYÜK EDİT BUTONU
 mainEditBtn.addEventListener("click", veriiOkuBakim);
