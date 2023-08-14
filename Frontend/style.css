@@ -87,6 +87,16 @@ form {
     left: 0;
 }
 
+#editPopupBackground {
+    height: 100%;
+    width: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 
 /* Popup stilini burada tanımlayabilirsiniz */
 .popup {

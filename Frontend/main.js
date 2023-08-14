@@ -86,11 +86,8 @@ saveParcelBtn.addEventListener("click", function () {
     huc4.appendChild(duzenleButon);
 
     duzenleButon.onclick = function (event) {
-        var closestElement = event.target.closest("tr");
-        console.log(closestElement);
-        debugger
-        var id = duzenleButon.id;
-        editingPopup(id);
+        var butonunOlduguSatir = event.target.closest("tr");
+        editingPopup(butonunOlduguSatir);
     };
 
     var silButon = document.createElement("button");            // Delete butonu
@@ -122,24 +119,21 @@ function deleteRow(deleteBtnId) {
 }
 
 // TABLODA OLAN EDİT BUTONUNA TIKLAYINCA ÇALIŞAN
-function editingPopup(btnID) {
+function editingPopup(mevcutSatir) {
     const editingPopup = document.getElementById("editingPopup");
-    const popupbackground = document.getElementById("popupBackground");
+    const editPopupBackground = document.getElementById("editPopupBackground");
     editingPopup.style.display = "block";
-    popupbackground.style.display = "block";
+    editPopupBackground.style.display = "block";
 
-    var editBtn = document.getElementById(btnID);
-    editWithPopup(editBtn)
+    editWithPopup(mevcutSatir)
 
 
     const closeBtn = document.getElementById("editingClosePopupButton");
     closeBtn.onclick = editingPopupClose;
 };
 
-function editWithPopup(editBtn) {
-    cancelBtn.onclick = editingPopupClose;
-    var currentPopup = editBtn.parentNode.parentNode;
-    var hucreler = currentPopup.getElementsByTagName('td');
+function editWithPopup(mevcutSatir) {
+    var hucreler = mevcutSatir.getElementsByTagName('td');
 
     for (var i = 0; i < hucreler.length - 1; i++) {
         // edit popup'ında inputBox'ları dolduran döngü
@@ -154,8 +148,8 @@ function editingPopupClose() {
     const editingPopup = document.getElementById("editingPopup");
     editingPopup.style.display = "none";
 
-    const popupBackground = document.getElementById("popupBackground");
-    popupBackground.style.display = "none";
+    const editPopupBackground = document.getElementById("editPopupBackground");
+    editPopupBackground.style.display = "none";
 }
 
 function veriiOkuBakim() {
@@ -173,6 +167,14 @@ function veriiOkuBakim() {
 
 }
 
+// EDİT POPUP ARKAPLANA TIKLAYINCA KAPATMA
+const editPopupBackground = document.getElementById("editPopupBackground");
+editPopupBackground.onclick = function () {
+    const editingPopup = document.getElementById("editingPopup");
+    editingPopup.style.display = 'none';
+    editPopupBackground.style.display = "none";
+}
+
 // POPUP ARKAPLANA TIKLAYINCA KAPATMA
 const popupBackground = document.getElementById("popupBackground");
 popupBackground.onclick = function () {
@@ -181,7 +183,6 @@ popupBackground.onclick = function () {
     var cizimler = source.getFeatures();
     source.removeFeature(cizimler[cizimler.length - 1]);
 }
-
 
 // POPUP KAPATMA BUTONU
 const closePopupButton = document.getElementById('closePopupButton');
