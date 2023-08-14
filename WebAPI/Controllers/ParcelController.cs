@@ -27,6 +27,16 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int parcelId)
+        {
+            var result = _parcelService.GetById(parcelId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
 
         [HttpPost("add")]
         public IActionResult Add(Parcel parcel)
