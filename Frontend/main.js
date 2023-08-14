@@ -2,17 +2,13 @@ import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import { Draw, Modify, Snap } from 'ol/interaction.js';
 import { OSM, Vector as VectorSource } from 'ol/source.js';
-import { Layer, Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
+import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
 import { get } from 'ol/proj.js';
-import { toStringHDMS } from 'ol/coordinate';
-import { toLonLat } from 'ol/proj';
-import { DrawEvent } from 'ol/interaction/Draw';
 import WKT from 'ol/format/WKT.js';
 
 const saveParcelBtn = document.getElementById("saveParcel");
 const mainEditBtn = document.getElementById("mainEditButton");
 const cancelBtn = document.getElementById("cancelBtn");
-var sayac = 0;
 
 const raster = new TileLayer({
     source: new OSM(),
@@ -20,7 +16,7 @@ const raster = new TileLayer({
 
 var format = new WKT();
 
-const source = new VectorSource();
+let source = new VectorSource();
 const vector = new VectorLayer({
     source: source,
     style: {
@@ -59,7 +55,6 @@ function addInteractions() {
         type: typeSelect.value,
     });
     map.addInteraction(draw);
-    draw.id = "drawId" + sayac;
     snap = new Snap({ source: source });
     map.addInteraction(snap);
     draw.addEventListener("drawend", onDrawEnd);            // çizme işlemi bitince tetiklenecek
@@ -72,24 +67,27 @@ saveParcelBtn.addEventListener("click", function () {
     var tablo = document.getElementById("table");
     var yeniSatir = tablo.insertRow(tablo.rows.length);
     yeniSatir.style = "background-color: white;"
-    yeniSatir.id = "tr" + sayac;
 
     var huc1 = yeniSatir.insertCell(0);
     var huc2 = yeniSatir.insertCell(1);
     var huc3 = yeniSatir.insertCell(2);
     var huc4 = yeniSatir.insertCell(3);
-
-    huc1.innerHTML = inputElements[0].value;
-    huc2.innerHTML = inputElements[1].value;
-    huc3.innerHTML = inputElements[2].value;
+    /*
+        
+        huc1.innerHTML = inputElements[0].value;
+        huc2.innerHTML = inputElements[1].value;
+        huc3.innerHTML = inputElements[2].value;
+     */
 
     var duzenleButon = document.createElement("button");        // Edit butonu
     duzenleButon.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Edit';
     duzenleButon.style = "margin:0 1rem; text-align: center;"
     huc4.appendChild(duzenleButon);
-    duzenleButon.id = "tableEditBtn" + sayac;
 
-    duzenleButon.onclick = function () {
+    duzenleButon.onclick = function (event) {
+        var closestElement = event.target.closest("tr");
+        console.log(closestElement);
+        debugger
         var id = duzenleButon.id;
         editingPopup(id);
     };
@@ -97,7 +95,6 @@ saveParcelBtn.addEventListener("click", function () {
     var silButon = document.createElement("button");            // Delete butonu
     silButon.innerHTML = "<i class=\"fa-solid fa-xmark\" style=\"color: #000000;\"></i> Delete";
     huc4.appendChild(silButon);
-    silButon.id = "deleteBtn" + sayac;
 
     silButon.onclick = function () {
         var deleteId = silButon.id;
@@ -109,7 +106,6 @@ saveParcelBtn.addEventListener("click", function () {
     }
     popup.style.display = 'none';
     popupBackground.style.display = "none";
-    sayac++;
 });
 
 // TABLODAN ELEMAN SİLEN FONKSİYON
@@ -161,6 +157,21 @@ function editingPopupClose() {
     popupBackground.style.display = "none";
 }
 
+function veriiOkuBakim() {
+    alert("Burayı düzenlemek lazım. Örnek bir veri çekme operasyonu");
+    const denemeTxt = $.ajax({
+        url: "https://localhost:44384/api/parcel/getall",
+        method: "get",
+        success: function (data) {
+            console.log(data, "verisi okunduuu");
+        },
+        error: function () {
+            console.log("okuyamadık hata oldu");
+        }
+    });
+
+}
+
 // POPUP KAPATMA BUTONU
 const closePopupButton = document.getElementById('closePopupButton');
 closePopupButton.addEventListener('click', () => {
@@ -168,6 +179,9 @@ closePopupButton.addEventListener('click', () => {
     popup.style.display = 'none';
     const popupBackground = document.getElementById("popupBackground");
     popupBackground.style.display = "none";
+
+    var cizimler = source.getFeatures();
+    source.removeFeature(cizimler[cizimler.length - 1]);
 });
 
 // ZOOM BUTON KONTROLLERI
@@ -182,28 +196,20 @@ document.getElementById("zoom-in").addEventListener("click", function () {
     view.setZoom(zoom + 1);
 });
 
+// ÇİZİM BİTİNCE ÇALIŞAN FONKSİYON
 function onDrawEnd(event) {
     const popup = document.getElementById("popup");
     const popupbackground = document.getElementById("popupBackground");
     popup.style.display = "block";
     popupbackground.style.display = "block";
 
-    var feature = event.feature; // Çizilen nesne
-    var geometry = feature.getGeometry(); // Geometriyi al
-    var format2 = new WKT();
-    var wkt2 = format2.writeGeometry(geometry);
-    var wktFeature = format2.writeFeature(feature);
-    var coordinates = format2.readGeometry(wkt2);
-    var transformedGeom = coordinates.transform('EPSG:3857', 'EPSG:4326');
-    console.log("tfgeo:", transformedGeom.flatCoordinates);
-    console.log("geom:", wkt2);
-    console.log("feature:", wktFeature);
+    var wkt = format.writeGeometry(event.feature.getGeometry());    // Geometriyi al ve writeGeometry fonksiyonunun içine at
+    var transformedCoordinates = format.readGeometry(wkt).transform('EPSG:3857', 'EPSG:4326');
+    console.log("WKT Geoms:", transformedCoordinates.flatCoordinates);
 }
 
 // ANA EKRANDA DURAN BÜYÜK EDİT BUTONU
-mainEditBtn.addEventListener("click", function () {
-    alert("BURASI DÜZELTİLECEK");
-});
+mainEditBtn.addEventListener("click", veriiOkuBakim);
 
 // Handle change event.
 typeSelect.onchange = function () {
