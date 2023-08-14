@@ -164,6 +164,7 @@ function editingPopupClose() {
 // POPUP KAPATMA BUTONU
 const closePopupButton = document.getElementById('closePopupButton');
 closePopupButton.addEventListener('click', () => {
+
     popup.style.display = 'none';
     const popupBackground = document.getElementById("popupBackground");
     popupBackground.style.display = "none";

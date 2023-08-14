@@ -1,6 +1,7 @@
 {
     "name": "wkt",
     "dependencies": {
+        "jquery": "^3.7.0",
         "ol": "7.4.0"
     },
     "devDependencies": {
