@@ -80,7 +80,7 @@ saveParcelBtn.addEventListener("click", function () {
         huc3.innerHTML = inputElements[2].value;
      */
 
-    var duzenleButon = document.createElement("button");        // Edit butonu
+    var duzenleButon = document.createElement("button");        // Tablo Edit butonu
     duzenleButon.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Edit';
     duzenleButon.style = "margin:0 1rem; text-align: center;"
     huc4.appendChild(duzenleButon);
@@ -90,13 +90,13 @@ saveParcelBtn.addEventListener("click", function () {
         editingPopup(butonunOlduguSatir);
     };
 
-    var silButon = document.createElement("button");            // Delete butonu
+    var silButon = document.createElement("button");            // Tablo Delete butonu
     silButon.innerHTML = "<i class=\"fa-solid fa-xmark\" style=\"color: #000000;\"></i> Delete";
     huc4.appendChild(silButon);
 
-    silButon.onclick = function () {
-        var deleteId = silButon.id;
-        deleteRow(deleteId);
+    silButon.onclick = function (event) {
+        var butonunOlduguSatir = event.target.closest("tr");
+        deleteRow(butonunOlduguSatir);
     };
 
     for (var i = 0; i < inputElements.length; i++) {                    // Girilen değerleri okuyup inputBox'ı temizleyen döngü
@@ -107,14 +107,10 @@ saveParcelBtn.addEventListener("click", function () {
 });
 
 // TABLODAN ELEMAN SİLEN FONKSİYON
-function deleteRow(deleteBtnId) {
-    var deleteBtn = document.getElementById(deleteBtnId);
+function deleteRow(mevcutSatir) {
     var uyar = confirm("Bu satırı silmek istediğinize emin misiniz?");
-    const silinecek = document.getElementById("drawId0")
-
     if (uyar) {
-        var currentRow = deleteBtn.parentNode.parentNode;
-        currentRow.parentNode.removeChild(currentRow);
+        mevcutSatir.parentNode.removeChild(mevcutSatir);
     }
 }
 
@@ -143,7 +139,7 @@ function editWithPopup(mevcutSatir) {
     }
 }
 
-// DÜZENLEME POPUP KAPATMA BUTONU
+// EDİT POPUP KAPATMA BUTONU
 function editingPopupClose() {
     const editingPopup = document.getElementById("editingPopup");
     editingPopup.style.display = "none";
