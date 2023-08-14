@@ -10,6 +10,7 @@ const saveParcelBtn = document.getElementById("saveParcel");
 const mainEditBtn = document.getElementById("mainEditButton");
 const cancelBtn = document.getElementById("cancelBtn");
 
+
 const raster = new TileLayer({
     source: new OSM(),
 });
@@ -171,6 +172,16 @@ function veriiOkuBakim() {
     });
 
 }
+
+// POPUP ARKAPLANA TIKLAYINCA KAPATMA
+const popupBackground = document.getElementById("popupBackground");
+popupBackground.onclick = function () {
+    popup.style.display = 'none';
+    popupBackground.style.display = "none";
+    var cizimler = source.getFeatures();
+    source.removeFeature(cizimler[cizimler.length - 1]);
+}
+
 
 // POPUP KAPATMA BUTONU
 const closePopupButton = document.getElementById('closePopupButton');
